@@ -23,6 +23,8 @@ class AuthController extends Controller
         // 清除验证码缓存
         Cache::forget($key);
 
-        return User::create($request->all());
+        $user = User::create($request->all());
+
+        return $user->createDeviceToken($request->device_name);
     }
 }

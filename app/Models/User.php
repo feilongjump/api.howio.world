@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\WithDiffForHumanTimes;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, WithDiffForHumanTimes;
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +43,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => 'datetime:Y-m-d H:i',
+        'updated_at' => 'datetime:Y-m-d H:i',
+    ];
+
+    protected $appends = [
+        'created_at_time_ago', 'updated_at_time_ago',
     ];
 
     protected function password(): Attribute
@@ -49,5 +56,13 @@ class User extends Authenticatable
         return Attribute::make(
             set: fn (string $value) => Hash::needsRehash($value) ? Hash::make($value) : $value,
         );
+    }
+
+    public function createDeviceToken(?string $device = null, ?array $abilities = null): array
+    {
+        return [
+            'token_type' => 'Bearer',
+            'token' => $this->createToken($device ?? 'PC', $abilities ?? ['*'])->plainTextToken,
+        ];
     }
 }

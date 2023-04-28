@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationCodeController;
 
 /*
@@ -22,3 +23,7 @@ Route::post('auth/sign-up', [AuthController::class, 'signUp']);
 // User
 Route::post('user/{medium}/verification-code', [VerificationCodeController::class, 'verificationCode'])
     ->where('medium', 'email');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('me', [UserController::class, 'me']);
+});
