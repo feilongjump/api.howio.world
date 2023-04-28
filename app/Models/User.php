@@ -21,9 +21,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password', 'email_verified_at'
     ];
 
     /**
@@ -42,13 +40,13 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime:Y-m-d H:i',
         'created_at' => 'datetime:Y-m-d H:i',
         'updated_at' => 'datetime:Y-m-d H:i',
     ];
 
     protected $appends = [
-        'created_at_time_ago', 'updated_at_time_ago',
+        'email_verified_at_time_ago', 'created_at_time_ago', 'updated_at_time_ago',
     ];
 
     protected function password(): Attribute
