@@ -17,6 +17,10 @@ class AuthRequest extends FormRequest
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:6',
                 'verification_code' => 'required|string|size:6',
+            ],
+            '/auth/sign-in' => [
+                'username' => 'required|min:3',
+                'password' => 'required|string|min:6',
             ]
         };
     }

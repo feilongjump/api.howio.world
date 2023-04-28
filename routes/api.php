@@ -19,6 +19,7 @@ use App\Http\Controllers\VerificationCodeController;
 
 // Auth
 Route::post('auth/sign-up', [AuthController::class, 'signUp']);
+Route::post('auth/sign-in', [AuthController::class, 'signIn']);
 
 // User
 Route::post('user/{medium}/verification-code', [VerificationCodeController::class, 'verificationCode'])
