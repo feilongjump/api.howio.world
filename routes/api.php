@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\VerificationCodeController;
 
 /*
@@ -27,4 +28,8 @@ Route::post('user/{medium}/verification-code', [VerificationCodeController::clas
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [UserController::class, 'me']);
+
+    Route::resources([
+        'threads' => ThreadController::class
+    ]);
 });
