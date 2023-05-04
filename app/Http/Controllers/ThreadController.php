@@ -29,6 +29,9 @@ class ThreadController extends Controller
     {
         $this->authorize('create', Thread::class);
 
+        $request->merge([
+            'user_id' => request()->user()->id
+        ]);
         $thread = Thread::create($request->all());
 
         return new ThreadResource($thread);
