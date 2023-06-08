@@ -16,17 +16,18 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::where(function (Builder $query) use ($request) {
-            $query->published()
-                ->when($request->user(),
-                    fn (Builder $query, $user) => $query->orWhere('user_id', $user->id)
-                );
+        $posts = Post::with('user')
+            ->where(function (Builder $query) use ($request) {
+                $query->published()
+                    ->when($request->user(),
+                        fn (Builder $query, $user) => $query->orWhere('user_id', $user->id)
+                    );
             })
             ->when($request->keywords,
                 fn (Builder $query, $keywords) => $query->keywords($keywords)
             )
             ->orderByDesc('published_at')
-            ->paginate($request->get('per_page', 20));
+            ->simplePaginate($request->get('per_page', 20));
 
         return PostResource::collection($posts);
     }
@@ -53,7 +54,7 @@ class PostController extends Controller
     {
         $this->authorize('view', $post);
 
-        $post->load('content');
+        $post->load(['user', 'content']);
 
         return new PostResource($post);
     }
