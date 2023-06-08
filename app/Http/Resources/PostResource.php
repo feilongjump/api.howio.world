@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 
-class ThreadResource extends JsonResource
+class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

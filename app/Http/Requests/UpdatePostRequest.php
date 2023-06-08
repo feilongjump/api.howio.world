@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UpdateThreadRequest extends FormRequest
+class UpdatePostRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

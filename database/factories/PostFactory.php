@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Thread>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
  */
-class ThreadFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,6 +19,7 @@ class ThreadFactory extends Factory
     {
         return [
             'title' => fake()->sentence,
+            'excerpt' => fake()->text,
             'published_at' => fake()->dateTimeInInterval('-1 years', '+2 months')
         ];
     }

@@ -2,12 +2,18 @@
 
 namespace App\Policies;
 
-use App\Models\Thread;
+use App\Models\Post;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class ThreadPolicy extends Policy
+class PostPolicy extends Policy
 {
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Post $post): bool
+    {
+        return $user->id === $post->user_id || $post->published_at;
+    }
 
     /**
      * Determine whether the user can create models.
@@ -20,7 +26,7 @@ class ThreadPolicy extends Policy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Thread $thread): bool
+    public function update(User $user, Post $post): bool
     {
         //
     }
@@ -28,7 +34,7 @@ class ThreadPolicy extends Policy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Thread $thread): bool
+    public function delete(User $user, Post $post): bool
     {
         //
     }
@@ -36,7 +42,7 @@ class ThreadPolicy extends Policy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Thread $thread): bool
+    public function restore(User $user, Post $post): bool
     {
         //
     }
@@ -44,7 +50,7 @@ class ThreadPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Thread $thread): bool
+    public function forceDelete(User $user, Post $post): bool
     {
         //
     }

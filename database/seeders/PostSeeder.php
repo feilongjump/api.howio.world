@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Thread;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 
-class ThreadSeeder extends Seeder
+class PostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Thread::factory()
+        Post::factory()
             ->belongUser()
             ->hasContent()
             ->count(50)
