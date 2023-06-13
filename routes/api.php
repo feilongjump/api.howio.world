@@ -26,7 +26,7 @@ Route::post('auth/sign-in', [AuthController::class, 'signIn']);
 Route::post('user/{medium}/verification-code', [VerificationCodeController::class, 'verificationCode'])
     ->where('medium', 'email');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('me', [UserController::class, 'me']);
 });
 
