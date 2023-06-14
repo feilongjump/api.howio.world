@@ -46,4 +46,16 @@ class Post extends Model
                 ->orWhere('excerpt', 'like', "%{$keywords}%");
         });
     }
+
+    /**
+     * 校验短期内的发帖次数
+     */
+    public static function throttleCheck(User $user)
+    {
+        $lastPost = $user->posts()->latest()->first();
+
+        if ($lastPost && $lastPost->created_at->gt(now()->subMinutes(config('throttle.thread.create')))) {
+            \abort(403, '发贴太频繁');
+        }
+    }
 }

@@ -7,12 +7,25 @@ use Illuminate\Support\Arr;
 
 class PostObserver
 {
-    public function saved(Post $post)
+    public function creating(Post $post): void
     {
-        $contentData = Arr::only(request()->input('content', []), 'markdown');
+        // 非命令行下执行
+        if (! app()->runningInConsole()) {
+            $post->user_id = auth()->id() ?? 1;
 
-        $post->content()->updateOrCreate(['contentable_id' => $post->id], $contentData);
+            // 非开发环境，限制一段时间内的发帖次数
+            app()->isLocal() || Post::throttleCheck($post->user);
+        }
+    }
 
-        $post->loadMissing('content');
+    public function saved(Post $post): void
+    {
+        if (! app()->runningInConsole()) {
+            $contentData = Arr::only(request()->input('content', []), 'markdown');
+
+            $post->content()->updateOrCreate(['contentable_id' => $post->id], $contentData);
+
+            $post->loadMissing('content');
+        }
     }
 }

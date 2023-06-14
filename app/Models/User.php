@@ -62,4 +62,9 @@ class User extends Authenticatable
             'token' => $this->createToken($device ?? 'PC', $abilities ?? ['*'])->plainTextToken,
         ];
     }
+
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
 }
