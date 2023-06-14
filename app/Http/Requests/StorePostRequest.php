@@ -13,7 +13,6 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title' => 'required|min:2|max:64',
-            'published_at' => 'nullable|date|after_or_equal:now',
             'content.markdown' => 'required',
         ];
     }

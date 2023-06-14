@@ -46,9 +46,6 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        $request->merge([
-            'user_id' => request()->user()->id
-        ]);
         $post = Post::create($request->all());
 
         return new PostResource($post);
