@@ -17,6 +17,7 @@ class ContentFactory extends Factory
     public function definition(): array
     {
         return [
+            'body' => fake()->randomHtml(),
             'markdown' => fake()->text(2000)
         ];
     }

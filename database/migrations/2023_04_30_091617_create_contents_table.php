@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
             $table->morphs('contentable'); // contentable_id, contentable_type
+            $table->mediumText('body');
             $table->mediumText('markdown')->nullable();
             $table->timestamps();
             $table->softDeletes();
