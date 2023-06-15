@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model
@@ -57,5 +60,27 @@ class Post extends Model
         if ($lastPost && $lastPost->created_at->gt(now()->subMinutes(config('throttle.thread.create')))) {
             \abort(403, '发贴太频繁');
         }
+    }
+
+    /**
+     * 从 markdown 内容中获取摘录
+     */
+    public static function extractExcerptFromContent(string $markdown, int $limit = 450, string $end = ''): string
+    {
+        $splitStr = '~~---~~';
+
+        $html = Str::of($markdown)
+            ->whenContains($splitStr,
+                function (Stringable $string) use ($splitStr, $limit, $end) {
+                    return $string
+                        ->beforeLast($splitStr)
+                        ->markdown()
+                        ->limit($limit, $end)
+                        ->value();
+                },
+                fn () => ''
+            );
+
+        return Purifier::clean($html);
     }
 }

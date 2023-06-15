@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index();
             $table->string('title');
-            $table->string('excerpt');
+            $table->string('excerpt', 500);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

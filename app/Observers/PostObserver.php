@@ -15,7 +15,16 @@ class PostObserver
 
             // 非开发环境，限制一段时间内的发帖次数
             app()->isLocal() || Post::throttleCheck($post->user);
+
+            // 获取内容的摘录
+            $post->excerpt = Post::extractExcerptFromContent(request()->input('content.markdown'));
         }
+    }
+
+    public function saving(Post $post): void
+    {
+        // 获取内容的摘录
+        $post->excerpt = Post::extractExcerptFromContent(request()->input('content.markdown'));
     }
 
     public function saved(Post $post): void
