@@ -7,27 +7,17 @@ use Illuminate\Support\Arr;
 
 class PostObserver
 {
-    public function creating(Post $post): void
+    public function saving(Post $post)
     {
-        // 非命令行下执行
         if (! app()->runningInConsole()) {
-            $post->user_id = auth()->id() ?? 1;
+            $post->user_id = auth()->id() ?? 0;
 
-            // 非开发环境，限制一段时间内的发帖次数
-            app()->isLocal() || Post::throttleCheck($post->user);
-
-            // 获取内容的摘录
-            $post->excerpt = Post::extractExcerptFromContent(request()->input('content.markdown'));
+            $post->excerpt = Post::extractExcerptFromMarkdown(request()->input('content.markdown'));
+            $post->published_at = Post::extractPublishedAtFromMarkdown(request()->input('content.markdown'), $post);
         }
     }
 
-    public function saving(Post $post): void
-    {
-        // 获取内容的摘录
-        $post->excerpt = Post::extractExcerptFromContent(request()->input('content.markdown'));
-    }
-
-    public function saved(Post $post): void
+    public function saved(Post $post)
     {
         if (! app()->runningInConsole()) {
             $contentData = Arr::only(request()->input('content', []), 'markdown');

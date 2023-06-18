@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Stringable;
-use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model
@@ -63,24 +63,68 @@ class Post extends Model
     }
 
     /**
-     * 从 markdown 内容中获取摘录
+     * 从 Markdown 内容中截取摘录信息
+     *
+     * @param string $markdown
+     * @param int $maxLength
+     * @param string $end
+     * @return string
      */
-    public static function extractExcerptFromContent(string $markdown, int $limit = 450, string $end = ''): string
+    public static function extractExcerptFromMarkdown(string $markdown, int $maxLength = 450, string $end = ''): string
     {
-        $splitStr = '~~---~~';
+        $str = '---';
 
-        $html = Str::of($markdown)
-            ->whenContains($splitStr,
-                function (Stringable $string) use ($splitStr, $limit, $end) {
-                    return $string
-                        ->beforeLast($splitStr)
+        return Str::of($markdown)
+            ->whenContainsAll([$str, $str],
+                function (Stringable $stringable) use ($str, $maxLength, $end) {
+                    // 最大只获取前 550 以内的内容进行转换
+                    // 因为可能存在发布时间以及标签文字，所以得进行限制字符长度
+                    // TODO: 如何更改截取方式，会更加好
+                    return $stringable
+                        ->limit(550)
+                        ->betweenFirst($str, $str)
                         ->markdown()
-                        ->limit($limit, $end)
+                        ->limit($maxLength, $end)
                         ->value();
                 },
                 fn () => ''
             );
+    }
 
-        return Purifier::clean($html);
+    /**
+     * 从 Markdown 内容中截取发布时间
+     *
+     * @param string $markdown
+     * @param Post $post
+     * @return string|null
+     */
+    public static function extractPublishedAtFromMarkdown(string $markdown, Post $post): string | null
+    {
+        $publishedAt = $post->getOriginal('published_at');
+        $publishedAt = $publishedAt === null ? null : Carbon::parse($publishedAt);
+        // 已发布的无法更改发布时间
+        if ($publishedAt && $publishedAt->lte(now())) return $publishedAt;
+
+        $str = '`published_at:';
+        $endStr = '`';
+        $updatedPublishedAt = Str::of($markdown)
+            ->whenContainsAll([$str, $endStr],
+                function (Stringable $stringable) use ($str, $endStr) {
+                    $value = $stringable->betweenFirst($str, $endStr)->trim()->value();
+                    if (empty($value) || $value === 'null') return '';
+
+                    return new Carbon($value);
+                },
+                fn () => ''
+            );
+
+        // 更改为：待发布
+        if (empty($updatedPublishedAt)) return null;
+
+        // 严禁更改为过往时间
+        if ($updatedPublishedAt->lte(now())) abort(422, '禁止发布过往时间的帖子');
+
+        // 更改为：更新发布时间
+        return $updatedPublishedAt;
     }
 }
