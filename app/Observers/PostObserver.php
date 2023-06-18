@@ -7,10 +7,13 @@ use Illuminate\Support\Arr;
 
 class PostObserver
 {
-    public function creating(Post $post)
+    public function saving(Post $post)
     {
         if (! app()->runningInConsole()) {
             $post->user_id = auth()->id() ?? 0;
+
+            $post->excerpt = Post::extractExcerptFromMarkdown(request()->input('content.markdown'));
+            $post->published_at = Post::extractPublishedAtFromMarkdown(request()->input('content.markdown'), $post);
         }
     }
 
