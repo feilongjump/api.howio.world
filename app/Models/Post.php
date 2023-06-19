@@ -100,10 +100,11 @@ class Post extends Model
      */
     public static function extractPublishedAtFromMarkdown(string $markdown, Post $post): string | null
     {
+        $now = now();
         $publishedAt = $post->getOriginal('published_at');
         $publishedAt = $publishedAt === null ? null : Carbon::parse($publishedAt);
         // 已发布的无法更改发布时间
-        if ($publishedAt && $publishedAt->lte(now())) return $publishedAt;
+        if ($publishedAt && $publishedAt->lte($now)) return $publishedAt;
 
         $str = '`published_at:';
         $endStr = '`';
@@ -122,7 +123,7 @@ class Post extends Model
         if (empty($updatedPublishedAt)) return null;
 
         // 严禁更改为过往时间
-        if ($updatedPublishedAt->lte(now())) abort(422, '禁止发布过往时间的帖子');
+        if ($updatedPublishedAt->lt($now)) abort(422, '禁止发布过往时间的帖子');
 
         // 更改为：更新发布时间
         return $updatedPublishedAt;
