@@ -14,7 +14,7 @@ class Policy
         //
     }
 
-    public function before(User $authUser): void
+    public function before(?User $authUser): void
     {
         // This user is admin, then he will go anywhere at will
     }
