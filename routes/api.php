@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -29,6 +28,11 @@ Route::post('user/{medium}/verification-code', [VerificationCodeController::clas
 Route::middleware('auth')->group(function () {
     Route::get('me', [UserController::class, 'me']);
 });
+
+\LaravelUploader::routes([
+    'as' => 'files.upload',
+    'middleware' => ['auth'],
+]);
 
 Route::resources([
     'posts' => PostController::class

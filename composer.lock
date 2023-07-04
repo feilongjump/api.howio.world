@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a45bbf0e9b2ab6ee0029e0d0eb6d6c59",
+    "content-hash": "e40532813d414925b4ca3a49b857c038",
     "packages": [
         {
             "name": "brick/math",
@@ -2253,6 +2253,79 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "overtrue/laravel-uploader",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/laravel-uploader.git",
+                "reference": "184f537092acd2b6a6150aa08c879e839eaae1f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/laravel-uploader/zipball/184f537092acd2b6a6150aa08c879e839eaae1f9",
+                "reference": "184f537092acd2b6a6150aa08c879e839eaae1f9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": "^9.0|^10.0"
+            },
+            "require-dev": {
+                "brainmaestro/composer-git-hooks": "dev-master",
+                "laravel/pint": "^1.5",
+                "mockery/mockery": "^1.5",
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "\\Overtrue\\LaravelUploader\\UploadServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelUploader": "\\Overtrue\\LaravelUploader\\LaravelUploader"
+                    }
+                },
+                "hooks": {
+                    "pre-commit": [
+                        "composer test",
+                        "composer check-style"
+                    ],
+                    "pre-push": [
+                        "composer test",
+                        "composer fix-style"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\LaravelUploader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "i@overtrue.me"
+                }
+            ],
+            "description": "An upload component for Laravel.",
+            "support": {
+                "issues": "https://github.com/overtrue/laravel-uploader/issues",
+                "source": "https://github.com/overtrue/laravel-uploader/tree/3.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/overtrue",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-15T07:41:07+00:00"
         },
         {
             "name": "phpoption/phpoption",
