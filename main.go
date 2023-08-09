@@ -1,25 +1,24 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
 
+	"github.com/feilongjump/api.howio.world/bootstrap"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// 初始化 Gin 实例
-	r := gin.Default()
+	router := gin.New()
 
-	// 注册一个路由
-	r.GET("/", func(c *gin.Context) {
+	// 初始化路由
+	bootstrap.SetupRoute(router)
 
-		// 以 JSON 格式响应
-		c.JSON(http.StatusOK, gin.H{
-			"Hello": "World!",
-		})
-	})
-
-	r.SetTrustedProxies(nil)
+	router.SetTrustedProxies(nil)
 	// 运行服务
-	r.Run(":3000")
+	err := router.Run(":3000")
+	if err != nil {
+		// 错误处理，端口被占用了或者其他错误
+		fmt.Println(err.Error())
+	}
 }
