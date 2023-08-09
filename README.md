@@ -14,12 +14,16 @@
 
 ```
 .
-├── .air.toml   自动重载应用配置文件
-├── .gitignore  git 忽略文件
-├── go.mod      Go 模块文件
-├── go.sum      Go 模块的依赖版本文件
-├── main.go     项目应用入口文件
-└── README.md   项目手册
+├── bootstrap       程序初始化的代码
+│  └── route.go         初始化路由
+├── route           路由文件
+│  └── api.go           API 路由
+├── .air.toml       自动重载应用配置文件
+├── .gitignore      git 忽略文件
+├── go.mod          Go 模块文件
+├── go.sum          Go 模块的依赖版本文件
+├── main.go         项目应用入口文件
+└── README.md       项目手册
 ```
 
 不一定会提前写好有什么，但有的东西就会补充上去。
