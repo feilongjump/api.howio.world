@@ -1,0 +1,8 @@
+.env
+
+# 临时文件 #
+tmp/
+
+# IDE specific files
+.vscode
+.idea
