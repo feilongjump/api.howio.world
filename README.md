@@ -16,8 +16,12 @@
 .
 ├── bootstrap       程序初始化的代码
 │  └── route.go         初始化路由
+│  └── config.go        初始化配置
 ├── route           路由文件
 │  └── api.go           API 路由
+├── pkg             自定义库
+│  └── config           环境配置库
+│    └── config.go          环境配置文件
 ├── .air.toml       自动重载应用配置文件
 ├── .gitignore      git 忽略文件
 ├── go.mod          Go 模块文件
