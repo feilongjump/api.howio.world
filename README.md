@@ -24,6 +24,7 @@
 │    └── config.go          环境配置文件
 ├── .air.toml       自动重载应用配置文件
 ├── .gitignore      git 忽略文件
+├── env.*.toml      项目环境配置文件
 ├── go.mod          Go 模块文件
 ├── go.sum          Go 模块的依赖版本文件
 ├── main.go         项目应用入口文件
