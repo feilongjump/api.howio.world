@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/feilongjump/api.howio.world/bootstrap"
-	"github.com/feilongjump/api.howio.world/pkg/config"
+	"github.com/feilongjump/api.howio.world/internal/config"
 	"github.com/gin-gonic/gin"
 )
 

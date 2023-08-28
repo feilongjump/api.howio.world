@@ -19,8 +19,8 @@
 │  └── config.go        初始化配置
 ├── route           路由文件
 │  └── api.go           API 路由
-├── pkg             自定义库
-│  └── config           环境配置库
+├── internal        内部引用的 Go 包
+│  └── config           环境配置包
 │    └── config.go          环境配置文件
 ├── .air.toml       自动重载应用配置文件
 ├── .gitignore      git 忽略文件
