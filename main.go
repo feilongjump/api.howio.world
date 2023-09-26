@@ -11,6 +11,8 @@ import (
 func main() {
 	// 初始化配置文件信息
 	bootstrap.SetupConfig()
+	// 初始化数据库连接
+	bootstrap.SetupDatabase()
 
 	// 初始化 Gin 实例
 	router := gin.New()
