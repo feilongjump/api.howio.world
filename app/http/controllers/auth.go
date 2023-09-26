@@ -24,7 +24,13 @@ func (*AuthController) SignIn(ctx *gin.Context) {
 	user, err := userModel.GetByUsername(params.Username)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"msg": err.Error(),
+			"msg": "账号不存在",
+		})
+		return
+	}
+	if !user.ComparePassword(params.Password) {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"msg": "密码错误",
 		})
 		return
 	}

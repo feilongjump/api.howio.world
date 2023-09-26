@@ -1,6 +1,9 @@
 package user
 
-import "github.com/feilongjump/api.howio.world/internal/database"
+import (
+	"github.com/feilongjump/api.howio.world/internal/database"
+	"github.com/feilongjump/api.howio.world/internal/hash"
+)
 
 type User struct {
 	ID       int64  `json:"id"`
@@ -16,4 +19,8 @@ func GetByUsername(username string) (user User, err error) {
 	}
 
 	return user, nil
+}
+
+func (user *User) ComparePassword(_password string) bool {
+	return hash.BcryptCheck(_password, user.Password)
 }
