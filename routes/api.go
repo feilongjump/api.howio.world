@@ -26,4 +26,5 @@ func registerAuthRoutes(r *gin.Engine) {
 
 	authRoute := r.Group("/auth")
 	authRoute.POST("sign-in", authController.SignIn)
+	authRoute.POST("sign-up", authController.SignUp)
 }

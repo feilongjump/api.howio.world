@@ -24,3 +24,11 @@ func GetByUsername(username string) (user User, err error) {
 func (user *User) ComparePassword(_password string) bool {
 	return hash.BcryptCheck(_password, user.Password)
 }
+
+func (user *User) Create() error {
+	if err := database.DB.Create(&user); err != nil {
+		return err.Error
+	}
+
+	return nil
+}
