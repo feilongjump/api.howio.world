@@ -6,6 +6,7 @@ import (
 	"github.com/feilongjump/api.howio.world/app/http/requests"
 	userModel "github.com/feilongjump/api.howio.world/app/models/user"
 	"github.com/feilongjump/api.howio.world/internal/jwt"
+	"github.com/feilongjump/api.howio.world/internal/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -68,10 +69,7 @@ func authToken(user userModel.User, ctx *gin.Context) {
 
 	token, err := jwt.GenerateToken(user.ID)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"msg": "登录失败，请重试",
-		})
-		return
+		response.Unauthorized(ctx)
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
