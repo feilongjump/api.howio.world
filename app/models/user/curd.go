@@ -18,3 +18,9 @@ func (user *User) Create() error {
 
 	return nil
 }
+
+func Get(id uint64) (user User) {
+	database.DB.First(&user, id)
+
+	return
+}

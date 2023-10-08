@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/feilongjump/api.howio.world/app/http/controllers"
+	"github.com/feilongjump/api.howio.world/app/http/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +19,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	})
 
 	registerAuthRoutes(r)
+
+	registerUserRoutes(r)
 }
 
 // Auth
@@ -27,4 +30,11 @@ func registerAuthRoutes(r *gin.Engine) {
 	authRoute := r.Group("/auth")
 	authRoute.POST("sign-in", authController.SignIn)
 	authRoute.POST("sign-up", authController.SignUp)
+}
+
+// User
+func registerUserRoutes(r *gin.Engine) {
+	userController := new(controllers.UserController)
+
+	r.GET("/me", middlewares.Auth(), userController.Me)
 }
