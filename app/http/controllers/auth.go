@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/feilongjump/api.howio.world/app/http/requests"
-	userModel "github.com/feilongjump/api.howio.world/app/models"
+	userModel "github.com/feilongjump/api.howio.world/app/models/user"
+	"github.com/feilongjump/api.howio.world/internal/jwt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +36,7 @@ func (*AuthController) SignIn(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user)
+	authToken(user, ctx)
 }
 
 func (*AuthController) SignUp(ctx *gin.Context) {
@@ -60,5 +61,21 @@ func (*AuthController) SignUp(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user)
+	authToken(user, ctx)
+}
+
+func authToken(user userModel.User, ctx *gin.Context) {
+
+	token, err := jwt.GenerateToken(user.ID)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"msg": "登录失败，请重试",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"token":      token,
+		"token_type": "Bearer",
+	})
 }
