@@ -17,6 +17,7 @@
 ├── app             项目应用文件
 │  └── http             HTTP 文件
 │    └── controllers        Controller
+│    └── middlewares        中间件
 │    └── requests           请求参数校验文件
 │  └── models           Model
 ├── bootstrap       程序初始化的代码
