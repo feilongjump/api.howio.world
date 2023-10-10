@@ -16,8 +16,7 @@ type AuthController struct{}
 func (*AuthController) SignIn(ctx *gin.Context) {
 
 	params := requests.SignInRequest{}
-	if err := ctx.ShouldBindJSON(&params); err != nil {
-		response.ValidatorUnprocessableEntity(ctx, params.GetErrors(err))
+	if ok := requests.Validator(ctx, &params, params.ErrorMessage()); !ok {
 		return
 	}
 
@@ -41,8 +40,7 @@ func (*AuthController) SignIn(ctx *gin.Context) {
 func (*AuthController) SignUp(ctx *gin.Context) {
 
 	params := requests.SignUpRequest{}
-	if err := ctx.ShouldBindJSON(&params); err != nil {
-		response.ValidatorUnprocessableEntity(ctx, params.GetErrors(err))
+	if ok := requests.Validator(ctx, &params, params.ErrorMessage()); !ok {
 		return
 	}
 
