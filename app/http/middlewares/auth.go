@@ -28,11 +28,13 @@ func Auth() gin.HandlerFunc {
 		claims, err := jwt.ParseToken(tokenSplit[1])
 		if err != nil {
 			response.Unauthorized(ctx)
+			return
 		}
 
 		// 令牌是否已过期
 		if claims.ExpiresAt.Unix() <= time.Now().Unix() {
 			response.Unauthorized(ctx)
+			return
 		}
 
 		ctx.Set("user_id", claims.UserID)
