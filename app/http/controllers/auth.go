@@ -17,9 +17,7 @@ func (*AuthController) SignIn(ctx *gin.Context) {
 
 	params := requests.SignInRequest{}
 	if err := ctx.ShouldBindJSON(&params); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, gin.H{
-			"msg": err.Error(),
-		})
+		response.ValidatorUnprocessableEntity(ctx, params.GetErrors(err))
 		return
 	}
 
@@ -44,9 +42,7 @@ func (*AuthController) SignUp(ctx *gin.Context) {
 
 	params := requests.SignUpRequest{}
 	if err := ctx.ShouldBindJSON(&params); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, gin.H{
-			"msg": err.Error(),
-		})
+		response.ValidatorUnprocessableEntity(ctx, params.GetErrors(err))
 		return
 	}
 

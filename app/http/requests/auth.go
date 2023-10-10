@@ -1,13 +1,63 @@
 package requests
 
+import (
+	"github.com/go-playground/validator/v10"
+)
+
 type SignInRequest struct {
-	Username string `json:"username" binding:"required,gte=2"`
+	Username string `json:"username" binding:"required,gte=5"`
 	Password string `json:"password" binding:"required,gte=6"`
 }
 
 type SignUpRequest struct {
-	Name            string `json:"name" binding:"required,gte=2"`
+	Name            string `json:"name" binding:"required,gte=5"`
 	Email           string `json:"email" binding:"required,email"`
 	Password        string `json:"password" binding:"required,gte=6"`
 	PasswordConfirm string `json:"password_confirm" binding:"required,eqfield=Password"`
+}
+
+func (SignInRequest) GetErrors(errors error) map[string]string {
+	errs := make(map[string]string)
+
+	messages := map[string]string{
+		"Username.required": "请输入用户名",
+		"Username.gte":      "用户名长度不得小于 5",
+	}
+
+	for _, v := range errors.(validator.ValidationErrors) {
+
+		if err, ok := messages[v.Field()+"."+v.Tag()]; ok {
+			errs[v.Field()] = err
+		} else {
+			errs[v.Field()] = v.Error()
+		}
+	}
+
+	return errs
+}
+
+func (SignUpRequest) GetErrors(errors error) map[string]string {
+	errs := make(map[string]string)
+
+	messages := map[string]string{
+		"Name.required":            "请输入用户名",
+		"Name.gte":                 "用户名长度不得小于 5",
+		"Email.required":           "请输入邮箱",
+		"Email.email":              "邮箱格式不正确",
+		"Password.required":        "请输入密码",
+		"Password.gte":             "密码长度不得小于 6",
+		"PasswordConfirm.required": "请输入确认密码",
+		"PasswordConfirm.eqfield":  "确认密码与密码不一致",
+	}
+
+	for _, v := range errors.(validator.ValidationErrors) {
+
+		if err, ok := messages[v.Field()+"."+v.Tag()]; ok {
+			errs[v.Field()] = err
+		} else {
+			errs[v.Field()] = v.Error()
+		}
+	}
+
+	return errs
 }
