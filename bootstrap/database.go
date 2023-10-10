@@ -6,6 +6,7 @@ import (
 	"github.com/feilongjump/api.howio.world/internal/database"
 )
 
+// SetupDatabase 初始化 DB
 func SetupDatabase() {
 
 	db := database.ConnectDB()

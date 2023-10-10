@@ -9,14 +9,14 @@ import (
 	jwtpkg "github.com/golang-jwt/jwt/v5"
 )
 
-// 自定义载荷
+// JWTCustomClaims 自定义载荷
 type JWTCustomClaims struct {
 	UserID uint64 `json:"user_id"`
 
 	jwtpkg.RegisteredClaims
 }
 
-// 生成 jwt 令牌
+// GenerateToken 生成 jwt 令牌
 func GenerateToken(UserID uint64) (string, error) {
 
 	appName := config.GetString("app.name")
@@ -42,7 +42,7 @@ func GenerateToken(UserID uint64) (string, error) {
 	return token.SignedString([]byte(config.GetString("jwt.secret")))
 }
 
-// 解析 jwt 令牌
+// ParseToken 解析 jwt 令牌
 func ParseToken(tokenString string) (*JWTCustomClaims, error) {
 
 	token, err := jwtpkg.ParseWithClaims(tokenString, &JWTCustomClaims{}, func(t *jwtpkg.Token) (interface{}, error) {

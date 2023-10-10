@@ -10,6 +10,7 @@ import (
 
 var DB *gorm.DB
 
+// ConnectDB 连接数据库
 func ConnectDB() *gorm.DB {
 	var err error
 

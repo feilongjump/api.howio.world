@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// 更新模型前调用
+// BeforeSave 更新模型前调用
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
 	if !hash.BcryptIsHashed(user.Password) {
 		user.Password = hash.BcryptHash(user.Password)

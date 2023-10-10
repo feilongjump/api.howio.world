@@ -18,7 +18,7 @@ func SetupRoute(r *gin.Engine) {
 	setup404Handler(r)
 }
 
-// 注册中间件
+// registerGlobalMiddleWare 注册中间件
 func registerGlobalMiddleWare(r *gin.Engine) {
 	r.Use(
 		gin.Logger(),
@@ -26,7 +26,7 @@ func registerGlobalMiddleWare(r *gin.Engine) {
 	)
 }
 
-// 404 路由
+// setup404Handler 404 路由
 func setup404Handler(r *gin.Engine) {
 	// 处理 404 请求
 	r.NoRoute(func(c *gin.Context) {

@@ -13,7 +13,7 @@ type User struct {
 	Email    string `json:"email"`
 }
 
-// 密码校验
+// ComparePassword 密码校验
 func (user *User) ComparePassword(_password string) bool {
 	return hash.BcryptCheck(_password, user.Password)
 }

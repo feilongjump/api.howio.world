@@ -22,7 +22,7 @@ func init() {
 	config.AutomaticEnv()
 }
 
-// 初始化环境配置文件
+// InitConfig 初始化环境配置文件
 func InitConfig(envSuffix string) {
 
 	// 默认加载 env.local.toml 文件，如果有传参 --env=name 的话，加载 env.name.toml 文件

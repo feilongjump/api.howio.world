@@ -16,13 +16,16 @@ func main() {
 
 	// 初始化 Gin 实例
 	router := gin.New()
-
 	// 初始化路由
 	bootstrap.SetupRoute(router)
 
-	router.SetTrustedProxies(nil)
+	err := router.SetTrustedProxies(nil)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
 	// 运行服务
-	err := router.Run(":" + config.GetString("app.port"))
+	err = router.Run(":" + config.GetString("app.port"))
 	if err != nil {
 		// 错误处理，端口被占用了或者其他错误
 		fmt.Println(err.Error())
