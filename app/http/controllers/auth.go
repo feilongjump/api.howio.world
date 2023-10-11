@@ -58,6 +58,7 @@ func authToken(user userModel.User, ctx *gin.Context) {
 	token, err := jwt.GenerateToken(user.ID)
 	if err != nil {
 		response.Unauthorized(ctx)
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
