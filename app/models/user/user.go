@@ -11,6 +11,8 @@ type User struct {
 	Name     string `json:"name"`
 	Password string `json:"-"`
 	Email    string `json:"email"`
+
+	models.BaseTimeModel
 }
 
 // ComparePassword 密码校验
