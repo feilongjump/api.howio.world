@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 注册 API 路由
+// RegisterAPIRoutes 注册 API 路由
 func RegisterAPIRoutes(r *gin.Engine) {
 
 	// 注册一个路由
@@ -22,6 +22,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	registerAuthRoutes(r)
 
 	registerUserRoutes(r)
+
+	registerPostRoutes(r)
 }
 
 // registerAuthRoutes Auth API
@@ -38,4 +40,22 @@ func registerUserRoutes(r *gin.Engine) {
 	userController := new(controllers.UserController)
 
 	r.GET("/me", middlewares.Auth(), userController.Me)
+}
+
+// registerPostRoutes Post API
+func registerPostRoutes(r *gin.Engine) {
+	postController := new(controllers.PostController)
+
+	postAuthRoute := r.Group("/posts").Use(middlewares.Auth())
+	{
+		postAuthRoute.POST("", postController.Store)
+		postAuthRoute.PUT("/:post", postController.Update)
+		postAuthRoute.DELETE("/:post", postController.Destroy)
+	}
+
+	postGuestRoute := r.Group("/posts").Use(middlewares.Guest())
+	{
+		postGuestRoute.GET("", postController.Index)
+		postGuestRoute.GET("/:post", postController.Show)
+	}
 }
