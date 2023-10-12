@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"net/http"
-
 	"github.com/feilongjump/api.howio.world/app/http/requests"
 	userModel "github.com/feilongjump/api.howio.world/app/models/user"
 	"github.com/feilongjump/api.howio.world/internal/jwt"
@@ -61,7 +59,7 @@ func authToken(user userModel.User, ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
+	response.Success(ctx, gin.H{
 		"token":      token,
 		"token_type": "Bearer",
 	})
