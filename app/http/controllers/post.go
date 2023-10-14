@@ -23,12 +23,10 @@ func (*PostController) Index(ctx *gin.Context) {
 	})
 }
 
-func (*PostController) Show(ctx *gin.Context) {
+func (postController *PostController) Show(ctx *gin.Context) {
 
-	id, _ := strconv.Atoi(ctx.Param("post"))
-	post, err := postModel.Get(uint64(id))
-	if err != nil {
-		response.NotFound(ctx)
+	post, ok := postController.GetPost(ctx)
+	if !ok {
 		return
 	}
 
@@ -54,14 +52,50 @@ func (*PostController) Store(ctx *gin.Context) {
 	response.SuccessCreated(ctx, post)
 }
 
-func (*PostController) Update(ctx *gin.Context) {
+func (postController *PostController) Update(ctx *gin.Context) {
 
-	response.Success(ctx, gin.H{
-		"status": "success",
-	})
+	params := requests.PostUpdateRequest{}
+	if ok := requests.Validator(ctx, &params, params.ErrorMessage()); !ok {
+		return
+	}
+
+	post, ok := postController.GetPost(ctx)
+	if !ok {
+		return
+	}
+
+	post.Title = params.Title
+	if _, err := post.Update(); err != nil {
+		response.InternalServerError(ctx, err.Error())
+		return
+	}
+
+	response.Success(ctx, post)
 }
 
-func (*PostController) Destroy(ctx *gin.Context) {
+func (postController *PostController) Destroy(ctx *gin.Context) {
+
+	post, ok := postController.GetPost(ctx)
+	if !ok {
+		return
+	}
+
+	if err := post.Delete(); err != nil {
+		response.InternalServerError(ctx)
+		return
+	}
 
 	response.SuccessNoContent(ctx)
+}
+
+// GetPost 获取 Post 数据
+func (*PostController) GetPost(ctx *gin.Context) (postModel.Post, bool) {
+	id, _ := strconv.Atoi(ctx.Param("post"))
+	post, err := postModel.Get(uint64(id))
+	if err != nil {
+		response.NotFound(ctx)
+		return post, false
+	}
+
+	return post, true
 }

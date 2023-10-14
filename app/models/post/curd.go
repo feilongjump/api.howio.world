@@ -15,6 +15,13 @@ func (post *Post) Create() error {
 	return nil
 }
 
+func (post *Post) Update() (int64, error) {
+
+	result := database.DB.Save(&post)
+
+	return result.RowsAffected, result.Error
+}
+
 func Get(id uint64) (post Post, err error) {
 	result := database.DB.Preload(clause.Associations).First(&post, id)
 	err = result.Error
@@ -26,4 +33,10 @@ func GetPaginate(ctx *gin.Context) (post []Post, total int64) {
 	database.DB.Scopes(models.Paginator(ctx)).Find(&post).Count(&total)
 
 	return
+}
+
+func (post *Post) Delete() error {
+	result := database.DB.Delete(post)
+
+	return result.Error
 }
