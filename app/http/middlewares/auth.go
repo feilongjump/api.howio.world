@@ -5,7 +5,6 @@ import (
 	"github.com/feilongjump/api.howio.world/internal/response"
 	"github.com/gin-gonic/gin"
 	"strings"
-	"time"
 )
 
 type AuthUser struct {
@@ -17,7 +16,7 @@ func Auth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authUser := AuthUser{}
 
-		if ok := checkAuthToken(ctx, &authUser, false); !ok {
+		if ok := checkAuthToken(ctx, &authUser, true); !ok {
 			return
 		}
 
@@ -60,15 +59,7 @@ func checkAuthToken(ctx *gin.Context, authUser *AuthUser, isAbort bool) bool {
 	claims, err := jwt.ParseToken(tokenSplit[1])
 	if err != nil {
 		if isAbort {
-			response.Unauthorized(ctx)
-		}
-		return false
-	}
-
-	// 令牌是否已过期
-	if claims.ExpiresAt.Unix() <= time.Now().Unix() {
-		if isAbort {
-			response.Unauthorized(ctx)
+			response.Unauthorized(ctx, err.Error())
 		}
 		return false
 	}
