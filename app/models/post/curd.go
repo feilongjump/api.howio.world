@@ -4,6 +4,7 @@ import (
 	"github.com/feilongjump/api.howio.world/app/models"
 	"github.com/feilongjump/api.howio.world/internal/database"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
@@ -17,7 +18,10 @@ func (post *Post) Create() error {
 
 func (post *Post) Update() (int64, error) {
 
-	result := database.DB.Save(&post)
+	result := database.DB.
+		Session(&gorm.Session{FullSaveAssociations: true}).
+		Select("Content").
+		Updates(&post)
 
 	return result.RowsAffected, result.Error
 }
@@ -36,7 +40,7 @@ func GetPaginate(ctx *gin.Context) (post []Post, total int64) {
 }
 
 func (post *Post) Delete() error {
-	result := database.DB.Delete(post)
+	result := database.DB.Select("Content").Delete(post)
 
 	return result.Error
 }

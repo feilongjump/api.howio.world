@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/feilongjump/api.howio.world/app/http/requests"
+	contentModel "github.com/feilongjump/api.howio.world/app/models/content"
 	postModel "github.com/feilongjump/api.howio.world/app/models/post"
 	"github.com/feilongjump/api.howio.world/internal/response"
 	"strconv"
@@ -43,6 +44,9 @@ func (*PostController) Store(ctx *gin.Context) {
 	post := postModel.Post{
 		Title:  params.Title,
 		UserId: ctx.MustGet("user_id").(uint64),
+		Content: contentModel.Content{
+			Markdown: params.Content.Markdown,
+		},
 	}
 	if err := post.Create(); err != nil {
 		response.InternalServerError(ctx, err.Error())
@@ -65,6 +69,7 @@ func (postController *PostController) Update(ctx *gin.Context) {
 	}
 
 	post.Title = params.Title
+	post.Content.Markdown = params.Content.Markdown
 	if _, err := post.Update(); err != nil {
 		response.InternalServerError(ctx, err.Error())
 		return
