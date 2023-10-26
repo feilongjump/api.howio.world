@@ -21,6 +21,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 	registerAuthRoutes(r)
 
+	registerVerificationCodeRoutes(r)
+
 	registerUserRoutes(r)
 
 	registerPostRoutes(r)
@@ -33,6 +35,14 @@ func registerAuthRoutes(r *gin.Engine) {
 	authRoute := r.Group("/auth")
 	authRoute.POST("sign-in", authController.SignIn)
 	authRoute.POST("sign-up", authController.SignUp)
+}
+
+// registerAuthRoutes Verification Code API
+func registerVerificationCodeRoutes(r *gin.Engine) {
+	verificationCodeController := new(controllers.VerificationCodeController)
+
+	authRoute := r.Group("/user")
+	authRoute.POST(":medium/verification-code", verificationCodeController.VerificationCode)
 }
 
 // registerUserRoutes User API
