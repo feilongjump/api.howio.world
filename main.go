@@ -13,6 +13,8 @@ func main() {
 	bootstrap.SetupConfig()
 	// 初始化数据库连接
 	bootstrap.SetupDatabase()
+	// 初始化 redis 连接
+	bootstrap.SetupRedisDB()
 
 	// 初始化 Gin 实例
 	router := gin.New()
