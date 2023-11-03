@@ -4,6 +4,7 @@ import (
 	"github.com/feilongjump/api.howio.world/app/http/requests"
 	userModel "github.com/feilongjump/api.howio.world/app/models/user"
 	"github.com/feilongjump/api.howio.world/internal/jwt"
+	"github.com/feilongjump/api.howio.world/internal/redis"
 	"github.com/feilongjump/api.howio.world/internal/response"
 
 	"github.com/gin-gonic/gin"
@@ -35,6 +36,13 @@ func (*AuthController) SignUp(ctx *gin.Context) {
 
 	params := requests.SignUpRequest{}
 	if ok := requests.Validator(ctx, &params, params.ErrorMessage()); !ok {
+		return
+	}
+
+	if code := redis.Get("mail:verification_code:" + params.Email); code != params.VerificationCode {
+		response.ValidatorUnprocessableEntity(ctx, map[string]string{
+			"VerificationCode": "验证码错误",
+		})
 		return
 	}
 

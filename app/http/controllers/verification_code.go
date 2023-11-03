@@ -3,9 +3,11 @@ package controllers
 import (
 	"github.com/feilongjump/api.howio.world/app/http/requests"
 	"github.com/feilongjump/api.howio.world/internal/mail"
+	"github.com/feilongjump/api.howio.world/internal/redis"
 	"github.com/feilongjump/api.howio.world/internal/response"
 	"github.com/feilongjump/api.howio.world/internal/utils"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type VerificationCodeController struct{}
@@ -27,7 +29,12 @@ func (*VerificationCodeController) sendMailVerificationCode(ctx *gin.Context) {
 		return
 	}
 
-	mail.VerificationCode(params.Email, utils.CreateSixCaptcha())
+	code := utils.CreateSixCaptcha()
+
+	// 使用 redis 存储验证码
+	redis.Set("mail:verification_code:"+params.Email, code, 3*time.Minute)
+
+	mail.VerificationCode(params.Email, code)
 
 	response.SuccessNoContent(ctx)
 }
