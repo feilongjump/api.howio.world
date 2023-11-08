@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"github.com/feilongjump/api.howio.world/app/http/middlewares"
 	"net/http"
 	"strings"
 
@@ -23,6 +24,7 @@ func registerGlobalMiddleWare(r *gin.Engine) {
 	r.Use(
 		gin.Logger(),
 		gin.Recovery(),
+		middlewares.Cors(),
 	)
 }
 
