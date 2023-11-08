@@ -16,7 +16,7 @@ type Post struct {
 	PublishedAt sql.NullTime `json:"published_at"`
 
 	User    user.User       `gorm:"foreignKey:UserId" json:"user"`
-	Content content.Content `gorm:"polymorphic:Owner"`
+	Content content.Content `gorm:"polymorphic:Owner" json:"content"`
 
 	models.BaseTimeModel
 	models.BaseDeleteTimeModel
