@@ -25,13 +25,13 @@ func GenerateToken(UserID uint64) (string, error) {
 	claims := JWTCustomClaims{
 		UserID,
 		jwtpkg.RegisteredClaims{
-			Issuer:    appName,                                            // 签发者
-			Subject:   "API Token",                                        // 签发主题
-			Audience:  jwtpkg.ClaimStrings{appName + "_APP"},              // 签发受众
-			ExpiresAt: jwtpkg.NewNumericDate(expiresAt),                   // 过期时间
-			NotBefore: jwtpkg.NewNumericDate(time.Now().Add(time.Second)), // 最早使用时间
-			IssuedAt:  jwtpkg.NewNumericDate(time.Now()),                  // 签发时间
-			ID:        utils.GenerateRandomString(12),                     // wt ID, 类似于盐值
+			Issuer:    appName,                                                 // 签发者
+			Subject:   "API Token",                                             // 签发主题
+			Audience:  jwtpkg.ClaimStrings{appName + "_APP"},                   // 签发受众
+			ExpiresAt: jwtpkg.NewNumericDate(expiresAt),                        // 过期时间
+			NotBefore: jwtpkg.NewNumericDate(time.Now().Add(time.Microsecond)), // 最早使用时间
+			IssuedAt:  jwtpkg.NewNumericDate(time.Now()),                       // 签发时间
+			ID:        utils.GenerateRandomString(12),                          // wt ID, 类似于盐值
 		},
 	}
 
