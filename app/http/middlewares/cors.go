@@ -20,6 +20,7 @@ func Cors() gin.HandlerFunc {
 		}
 
 		if method == "OPTIONS" {
+			ctx.Abort()
 			response.SuccessNoContent(ctx)
 			return
 		}
