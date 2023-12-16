@@ -21,11 +21,15 @@ func (*AuthController) SignIn(ctx *gin.Context) {
 
 	user, err := userModel.GetByUsername(params.Username)
 	if err != nil {
-		response.Unauthorized(ctx, "账号不存在")
+		response.ValidatorUnprocessableEntity(ctx, map[string]string{
+			"Username": "账号不存在",
+		})
 		return
 	}
 	if !user.ComparePassword(params.Password) {
-		response.Unauthorized(ctx, "密码错误")
+		response.ValidatorUnprocessableEntity(ctx, map[string]string{
+			"Password": "密码错误",
+		})
 		return
 	}
 
