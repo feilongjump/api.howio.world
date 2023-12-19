@@ -34,11 +34,12 @@ func Get(id uint64) (post Post, err error) {
 }
 
 func GetPaginate(ctx *gin.Context) (post []Post, total int64) {
-	database.DB.Scopes(models.Paginator(ctx)).
+	database.DB.Model(&post).
+		Count(&total).
+		Scopes(models.Paginator(ctx)).
 		Order("published_at desc").
 		Order("created_at desc").
-		Find(&post).
-		Count(&total)
+		Find(&post)
 
 	return
 }
