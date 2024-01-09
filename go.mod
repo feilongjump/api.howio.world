@@ -9,6 +9,7 @@ require (
 	github.com/redis/go-redis/v9 v9.2.1
 	github.com/spf13/viper v1.16.0
 	github.com/xhit/go-simple-mail/v2 v2.16.0
+	github.com/yuin/goldmark v1.6.0
 	golang.org/x/crypto v0.13.0
 	gorm.io/driver/mysql v1.5.1
 	gorm.io/gorm v1.25.1
@@ -47,7 +48,6 @@ require (
 	github.com/toorop/go-dkim v0.0.0-20201103131630-e1cd1a0a5208 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	github.com/yuin/goldmark v1.6.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
