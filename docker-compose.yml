@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  ### APP ################################################
+  app:
+    build:
+      context: .
+      args:
+        - TZ=${TIMEZONE}
+    ports:
+      - "${APP_PORT}:8088"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+  ### MYSQL ################################################
+  mysql:
+    build:
+      context: ./deploy/mysql
+      args:
+        - TZ=${TIMEZONE}
+    command: --lower-case-table-names=2
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "mysql", "--version" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - ${DATA_PATH_HOST}/${MYSQL_FILE_NAME}:/var/lib/mysql
+  ### Redis ################################################
+  redis:
+    build:
+      context: ./deploy/redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ${DATA_PATH_HOST}/${REDIS_FILE_NAME}:/data
