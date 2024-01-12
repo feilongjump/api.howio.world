@@ -1,6 +1,9 @@
 package bootstrap
 
 import (
+	"github.com/feilongjump/api.howio.world/app/models/content"
+	"github.com/feilongjump/api.howio.world/app/models/post"
+	"github.com/feilongjump/api.howio.world/app/models/user"
 	"time"
 
 	"github.com/feilongjump/api.howio.world/internal/database"
@@ -25,4 +28,10 @@ func SetupDatabase() {
 	sqlDB.SetConnMaxLifetime(time.Minute * 3)
 	// 设置闲置连接的最大存在时间, support>=go1.15
 	sqlDB.SetConnMaxIdleTime(time.Minute * 3)
+
+	db.AutoMigrate(
+		&user.User{},
+		&post.Post{},
+		&content.Content{},
+	)
 }

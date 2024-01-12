@@ -9,11 +9,10 @@ import (
 
 type Post struct {
 	models.BaseModel
-	UserId uint64 `json:"-"`
+	UserId uint64 `gorm:"type:bigint;not null;index" json:"-"`
 
-	Title       string       `json:"title"`
-	Excerpt     string       `json:"excerpt"`
-	PublishedAt sql.NullTime `json:"published_at"`
+	Title       string       `gorm:"column:title;type:varchar(100);not null;index" json:"title"`
+	PublishedAt sql.NullTime `gorm:"column:published_at" json:"published_at"`
 
 	User    user.User       `gorm:"foreignKey:UserId" json:"user"`
 	Content content.Content `gorm:"polymorphic:Owner" json:"content"`

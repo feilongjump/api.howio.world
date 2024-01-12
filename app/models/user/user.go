@@ -8,9 +8,9 @@ import (
 type User struct {
 	models.BaseModel
 
-	Name     string `json:"name"`
-	Password string `json:"-"`
-	Email    string `json:"email"`
+	Name     string `gorm:"column:name;type:varchar(50);not null;index" json:"name"`
+	Password string `gorm:"column:password;type:varchar(64);not null" json:"-"`
+	Email    string `gorm:"column:email;type:varchar(100);not null;uniqueKey" json:"email"`
 
 	models.BaseTimeModel
 }

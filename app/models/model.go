@@ -8,16 +8,16 @@ import (
 )
 
 type BaseModel struct {
-	ID uint64 `json:"id"`
+	ID uint64 `gorm:"column:id;primaryKey;autoIncrement" json:"id,omitempty"`
 }
 
 type BaseTimeModel struct {
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `gorm:"column:created_at;index" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;index" json:"updated_at"`
 }
 
 type BaseDeleteTimeModel struct {
-	DeletedAt gorm.DeletedAt `json:"-"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"-"`
 }
 
 // Paginator 分页器
