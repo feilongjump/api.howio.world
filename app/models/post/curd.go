@@ -9,7 +9,7 @@ import (
 )
 
 func (post *Post) Create() error {
-	if err := database.DB.Create(&post); err != nil {
+	if err := database.DB.Create(post); err != nil {
 		return err.Error
 	}
 
@@ -19,9 +19,9 @@ func (post *Post) Create() error {
 func (post *Post) Update() (int64, error) {
 
 	result := database.DB.
+		Model(&post).
 		Session(&gorm.Session{FullSaveAssociations: true}).
-		Select("Content").
-		Updates(&post)
+		Updates(post)
 
 	return result.RowsAffected, result.Error
 }

@@ -44,10 +44,12 @@ func (*PostController) Store(ctx *gin.Context) {
 	post := postModel.Post{
 		Title:  params.Title,
 		UserId: ctx.MustGet("user_id").(uint64),
-		Content: contentModel.Content{
+		Content: &contentModel.Content{
 			Markdown: params.Content.Markdown,
 		},
 	}
+	postModel.GetPublishedAt(&post, params.PublishedAt)
+
 	if err := post.Create(); err != nil {
 		response.InternalServerError(ctx, err.Error())
 		return
@@ -69,6 +71,7 @@ func (postController *PostController) Update(ctx *gin.Context) {
 	}
 
 	post.Title = params.Title
+	postModel.GetPublishedAt(&post, params.PublishedAt)
 	post.Content.Markdown = params.Content.Markdown
 	if _, err := post.Update(); err != nil {
 		response.InternalServerError(ctx, err.Error())
@@ -95,7 +98,12 @@ func (postController *PostController) Destroy(ctx *gin.Context) {
 
 // GetPost 获取 Post 数据
 func (*PostController) GetPost(ctx *gin.Context) (postModel.Post, bool) {
-	id, _ := strconv.Atoi(ctx.Param("post"))
+	id, err := strconv.Atoi(ctx.Param("post"))
+	if err != nil {
+		response.NotFound(ctx)
+		return postModel.Post{}, false
+	}
+
 	post, err := postModel.Get(uint64(id))
 	if err != nil {
 		response.NotFound(ctx)

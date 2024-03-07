@@ -1,13 +1,14 @@
 package requests
 
 type Content struct {
-	Body     string `json:"body"`
+	Body     string `json:"body,omitempty"`
 	Markdown string `json:"markdown" binding:"required"`
 }
 
 type PostStoreRequest struct {
-	Title   string `json:"title" binding:"required,gte=2,lte=64"`
-	Content Content
+	Title       string `json:"title" binding:"required,gte=2,lte=64"`
+	PublishedAt string `json:"published_at,omitempty"`
+	Content     Content
 }
 
 func (PostStoreRequest) ErrorMessage() map[string]string {
@@ -20,8 +21,9 @@ func (PostStoreRequest) ErrorMessage() map[string]string {
 }
 
 type PostUpdateRequest struct {
-	Title   string `json:"title" binding:"required,gte=2,lte=64"`
-	Content Content
+	Title       string `json:"title" binding:"required,gte=2,lte=64"`
+	PublishedAt string `json:"published_at,omitempty"`
+	Content     Content
 }
 
 func (PostUpdateRequest) ErrorMessage() map[string]string {
