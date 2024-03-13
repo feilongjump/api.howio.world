@@ -26,8 +26,14 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
+
 	// 运行服务
-	err = router.Run(":" + config.GetString("app.port"))
+	addr := fmt.Sprintf("%s:%s", config.GetString("app.host"), config.GetString("app.port"))
+	if config.GetString("cert_file") != "" && config.GetString("key_file") != "" {
+		err = router.RunTLS(addr, config.GetString("cert"), config.GetString("cert"))
+	} else {
+		err = router.Run(addr)
+	}
 	if err != nil {
 		// 错误处理，端口被占用了或者其他错误
 		fmt.Println(err.Error())

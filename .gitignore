@@ -3,8 +3,9 @@ env.*.toml
 !env.example.toml
 .env
 
-# 临时文件 #
+# 文件 #
 tmp/
+ssl/
 
 # IDE specific files
 .vscode
