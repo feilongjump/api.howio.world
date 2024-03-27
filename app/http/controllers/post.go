@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/feilongjump/api.howio.world/app/http/requests"
 	contentModel "github.com/feilongjump/api.howio.world/app/models/content"
 	postModel "github.com/feilongjump/api.howio.world/app/models/post"
 	"github.com/feilongjump/api.howio.world/internal/response"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +15,7 @@ type PostController struct{}
 
 func (*PostController) Index(ctx *gin.Context) {
 
-	posts, total := postModel.GetPaginate(ctx)
+	posts, total := postModel.GetPaginate(ctx, ctx.MustGet("user_id").(uint64))
 
 	response.Success(ctx, gin.H{
 		"data": posts,
@@ -26,6 +27,7 @@ func (*PostController) Index(ctx *gin.Context) {
 
 func (postController *PostController) Show(ctx *gin.Context) {
 
+	// 直接传参 0
 	post, ok := postController.GetPost(ctx)
 	if !ok {
 		return
@@ -104,7 +106,7 @@ func (*PostController) GetPost(ctx *gin.Context) (postModel.Post, bool) {
 		return postModel.Post{}, false
 	}
 
-	post, err := postModel.Get(uint64(id))
+	post, err := postModel.Get(uint64(id), ctx.MustGet("user_id").(uint64))
 	if err != nil {
 		response.NotFound(ctx)
 		return post, false
